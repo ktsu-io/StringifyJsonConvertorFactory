@@ -1,3 +1,3 @@
-# StrongPaths
+# StringifyJsonConvertorFactory
 
-Implementation of strongly typed paths using StrongStrings.
+A JsonConvertor to convert classes to and from strings if they implement a public static FromString method.
