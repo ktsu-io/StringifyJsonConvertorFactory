@@ -3,13 +3,16 @@ namespace ktsu.io.StringifyJsonConvertorFactory;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ReflectionExtensions;
 
 public class StringifyJsonConvertorFactory : JsonConverterFactory
 {
 	public override bool CanConvert(Type typeToConvert)
 	{
 		ArgumentNullException.ThrowIfNull(typeToConvert, nameof(typeToConvert));
-		return typeToConvert.IsClass && typeToConvert.GetMethod("FromString", BindingFlags.Static | BindingFlags.Public) is not null;
+		return typeToConvert.TryFindMethod("FromString", BindingFlags.Static | BindingFlags.Public, out var method) &&
+			method is not null && method.GetParameters().Length != 0 &&
+			method.GetParameters().First().ParameterType == typeof(string);
 	}
 
 	public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
@@ -22,17 +25,17 @@ public class StringifyJsonConvertorFactory : JsonConverterFactory
 
 	private class StringifyJsonConvertor<T> : JsonConverter<T>
 	{
+		private static readonly MethodInfo? FromStringMethod;
+
+		static StringifyJsonConvertor() => typeof(T).TryFindMethod("FromString", BindingFlags.Static | BindingFlags.Public, out FromStringMethod);
+
 		public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 		{
 			ArgumentNullException.ThrowIfNull(typeToConvert, nameof(typeToConvert));
 
-			if (reader.TokenType != JsonTokenType.String)
-			{
-				throw new JsonException();
-			}
-
-			dynamic t = reader.GetString()!;
-			return (T?)t;
+			return reader.TokenType == JsonTokenType.String
+				? (T)FromStringMethod!.Invoke(null, new object[] { reader.GetString()! })!
+				: throw new JsonException();
 		}
 
 		public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)

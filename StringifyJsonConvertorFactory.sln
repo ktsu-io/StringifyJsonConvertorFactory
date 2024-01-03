@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34316.72
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringifyJsonConvertorFactory", "StringifyJsonConvertorFactory\StringifyJsonConvertorFactory.csproj", "{C308C7C5-F2D5-4D82-809C-6B0A76862D95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringifyJsonConvertorFactory.Test", "StringifyJsonConvertorFactory.Test\StringifyJsonConvertorFactory.Test.csproj", "{A3B420F0-F506-4AEF-98CC-CE49A4F09E63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C308C7C5-F2D5-4D82-809C-6B0A76862D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C308C7C5-F2D5-4D82-809C-6B0A76862D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C308C7C5-F2D5-4D82-809C-6B0A76862D95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B420F0-F506-4AEF-98CC-CE49A4F09E63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B420F0-F506-4AEF-98CC-CE49A4F09E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B420F0-F506-4AEF-98CC-CE49A4F09E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B420F0-F506-4AEF-98CC-CE49A4F09E63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
