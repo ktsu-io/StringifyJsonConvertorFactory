@@ -38,12 +38,29 @@ public class StringifyJsonConvertorFactory : JsonConverterFactory
 				: throw new JsonException();
 		}
 
+		public override T ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+		{
+			ArgumentNullException.ThrowIfNull(typeToConvert, nameof(typeToConvert));
+
+			return reader.TokenType == JsonTokenType.String
+				? (T)FromStringMethod!.Invoke(null, new object[] { reader.GetString()! })!
+				: throw new JsonException();
+		}
+
 		public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
 		{
 			ArgumentNullException.ThrowIfNull(value, nameof(value));
 			ArgumentNullException.ThrowIfNull(writer, nameof(writer));
 
 			writer.WriteStringValue(value.ToString());
+		}
+
+		public override void WriteAsPropertyName(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+		{
+			ArgumentNullException.ThrowIfNull(value, nameof(value));
+			ArgumentNullException.ThrowIfNull(writer, nameof(writer));
+
+			writer.WritePropertyName(value.ToString() ?? "");
 		}
 	}
 }
