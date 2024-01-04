@@ -30,4 +30,22 @@ public class Test
 		var result = JsonSerializer.Deserialize<Test>(jsonString, JsonSerializerOptions);
 		Assert.AreEqual(test.hiddenString, result?.hiddenString);
 	}
+
+	[TestMethod]
+	public void TestDictionary()
+	{
+		Dictionary<Test, int> test = new()
+		{
+			{
+				new("test1"), 1
+			},
+			{
+				new("test2"), 2
+			},
+		};
+		string jsonString = JsonSerializer.Serialize(test, JsonSerializerOptions);
+		var result = JsonSerializer.Deserialize<Dictionary<Test, int>>(jsonString, JsonSerializerOptions) ?? new();
+		Assert.IsTrue(test.Keys.Select(x => x.hiddenString).SequenceEqual(result.Keys.Select(x => x.hiddenString)));
+		Assert.IsTrue(test.Values.SequenceEqual(result.Values));
+	}
 }

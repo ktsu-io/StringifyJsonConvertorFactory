@@ -42,9 +42,7 @@ public class StringifyJsonConvertorFactory : JsonConverterFactory
 		{
 			ArgumentNullException.ThrowIfNull(typeToConvert, nameof(typeToConvert));
 
-			return reader.TokenType == JsonTokenType.String
-				? (T)FromStringMethod!.Invoke(null, new object[] { reader.GetString()! })!
-				: throw new JsonException();
+			return (T)FromStringMethod!.Invoke(null, new object[] { reader.GetString()! })!;
 		}
 
 		public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
