@@ -27,7 +27,15 @@ public class StringifyJsonConvertorFactory : JsonConverterFactory
 	{
 		private static readonly MethodInfo? FromStringMethod;
 
-		static StringifyJsonConvertor() => typeof(T).TryFindMethod("FromString", BindingFlags.Static | BindingFlags.Public, out FromStringMethod);
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1810:Initialize reference type static fields inline", Justification = "<Pending>")]
+		static StringifyJsonConvertor()
+		{
+			typeof(T).TryFindMethod("FromString", BindingFlags.Static | BindingFlags.Public, out FromStringMethod);
+			if (FromStringMethod?.ContainsGenericParameters ?? false)
+			{
+				FromStringMethod = FromStringMethod?.MakeGenericMethod(typeof(T));
+			}
+		}
 
 		public override T? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 		{
